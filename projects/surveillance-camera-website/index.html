@@ -113,10 +113,14 @@
   input:focus, textarea:focus { outline: none; box-shadow: 0 0 0 2px rgba(245,197,24,0.5); }
 
   /* Modal */
-  #product-modal { transition: opacity 0.3s ease, visibility 0.3s ease; }
-  #product-modal.modal-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-  #product-modal .modal-panel { transition: transform 0.3s ease; }
-  #product-modal.modal-hidden .modal-panel { transform: translateY(24px) scale(0.97); }
+  .ve-modal { transition: opacity 0.3s ease, visibility 0.3s ease; }
+  .ve-modal.modal-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+  .ve-modal .modal-panel { transition: transform 0.3s ease; }
+  .ve-modal.modal-hidden .modal-panel { transform: translateY(24px) scale(0.97); }
+
+  /* Admin */
+  #admin-banner { transition: opacity 0.25s ease; }
+  .admin-ctrl-btn { backdrop-filter: blur(4px); }
 
   #toast { transition: opacity 0.4s ease, transform 0.4s ease; }
   #toast.toast-hidden { opacity: 0; transform: translateY(12px); pointer-events: none; }
@@ -189,6 +193,18 @@
       <a href="#contact" class="nav-link" data-i18n="nav.contact">تواصل معنا</a>
     </nav>
   </header>
+
+  <!-- ============ ADMIN BANNER ============ -->
+  <div id="admin-banner" class="hidden fixed inset-x-0 z-30 bg-gold-500 text-ink-900">
+    <div class="max-w-7xl mx-auto px-5 md:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs md:text-sm font-semibold">
+      <span data-i18n="admin.active">وضع الإدارة مفعل — يمكنك الإضافة والتعديل والحذف</span>
+      <div class="flex items-center gap-2">
+        <button id="admin-add-btn" type="button" class="bg-ink-900 text-gold-500 px-4 py-1.5 rounded-full text-xs font-bold hover:bg-ink-800 transition-colors" data-i18n="admin.addProduct">إضافة منتج</button>
+        <button id="admin-reset-btn" type="button" class="border border-ink-900/40 px-4 py-1.5 rounded-full text-xs font-bold hover:bg-ink-900/10 transition-colors" data-i18n="admin.reset">استعادة الافتراضي</button>
+        <button id="admin-exit-btn" type="button" class="border border-ink-900/40 px-4 py-1.5 rounded-full text-xs font-bold hover:bg-ink-900/10 transition-colors" data-i18n="admin.exit">خروج</button>
+      </div>
+    </div>
+  </div>
 
   <main>
     <!-- ============ HERO ============ -->
@@ -436,7 +452,7 @@
   </footer>
 
   <!-- ============ PRODUCT MODAL ============ -->
-  <div id="product-modal" class="modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div id="product-modal" class="ve-modal modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
     <div class="absolute inset-0 bg-black/80" id="modal-backdrop"></div>
     <div class="modal-panel relative bg-ink-800 border border-gold-500/20 rounded-3xl max-w-3xl w-full max-h-[88vh] overflow-y-auto p-6 md:p-10">
       <button id="modal-close" aria-label="close" class="absolute top-5 end-5 w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:border-gold-500 hover:text-gold-500 transition-colors">✕</button>
@@ -462,6 +478,99 @@
     </div>
   </div>
 
+  <!-- ============ ADMIN PRODUCT EDITOR MODAL ============ -->
+  <div id="admin-modal" class="ve-modal modal-hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/80" id="admin-modal-backdrop"></div>
+    <div class="modal-panel relative bg-ink-800 border border-gold-500/20 rounded-3xl max-w-2xl w-full max-h-[88vh] overflow-y-auto p-6 md:p-8">
+      <button id="admin-modal-close" aria-label="close" type="button" class="absolute top-5 end-5 w-9 h-9 rounded-full border border-white/15 flex items-center justify-center hover:border-gold-500 hover:text-gold-500 transition-colors">✕</button>
+      <h3 id="admin-modal-title" class="font-cairo text-xl md:text-2xl font-extrabold mb-6"></h3>
+      <form id="admin-product-form" class="space-y-4" novalidate>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.nameAr">الاسم (عربي)</label>
+            <input required id="af-name-ar" type="text" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.nameEn">الاسم (إنجليزي)</label>
+            <input required id="af-name-en" type="text" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm" dir="ltr">
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.descAr">الوصف (عربي)</label>
+            <textarea required id="af-desc-ar" rows="2" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm resize-none"></textarea>
+          </div>
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.descEn">الوصف (إنجليزي)</label>
+            <textarea required id="af-desc-en" rows="2" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm resize-none" dir="ltr"></textarea>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.price">السعر (ر.س)</label>
+            <input required id="af-price" type="number" min="0" step="1" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.camType">شكل الكاميرا</label>
+            <select id="af-cam-type" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm">
+              <option value="dome">Dome</option>
+              <option value="bullet">Bullet</option>
+              <option value="ptz">PTZ</option>
+              <option value="mini">Mini / Cube</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.resolution">الدقة</label>
+            <input id="af-resolution" type="text" placeholder="4MP" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm" dir="ltr">
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.badgeAr">شارة (عربي) — اختياري</label>
+            <input id="af-badge-ar" type="text" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.badgeEn">شارة (إنجليزي) — اختياري</label>
+            <input id="af-badge-en" type="text" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm" dir="ltr">
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.nightAr">الرؤية الليلية (عربي)</label>
+            <input id="af-night-ar" type="text" placeholder="20 متر" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm">
+          </div>
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.nightEn">الرؤية الليلية (إنجليزي)</label>
+            <input id="af-night-en" type="text" placeholder="20 m" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm" dir="ltr">
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.connect">الاتصال</label>
+            <input id="af-connect" type="text" placeholder="Wi-Fi / PoE" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm" dir="ltr">
+          </div>
+          <div>
+            <label class="block text-xs text-white/50 mb-1.5" data-i18n="admin.field.protection">درجة الحماية</label>
+            <input id="af-protection" type="text" placeholder="IP66" class="w-full bg-ink-700 border border-white/10 rounded-lg px-3.5 py-2.5 text-sm" dir="ltr">
+          </div>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="submit" class="btn-gold flex-1 py-3 rounded-xl text-sm" data-i18n="admin.save">حفظ</button>
+          <button type="button" id="admin-modal-cancel" class="btn-outline flex-1 py-3 rounded-xl text-sm font-semibold" data-i18n="admin.cancel">إلغاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============ ADMIN ENTRY BUTTON ============ -->
+  <button id="admin-fab" type="button" aria-label="Admin" title="Admin"
+    class="fixed bottom-6 end-6 z-[55] w-11 h-11 rounded-full bg-ink-800/90 border border-white/15 text-white/40 hover:text-gold-500 hover:border-gold-500/50 flex items-center justify-center transition-colors">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>
+    </svg>
+  </button>
+
   <!-- ============ TOAST ============ -->
   <div id="toast" class="toast-hidden fixed bottom-6 start-1/2 -translate-x-1/2 z-[60] bg-gold-500 text-ink-900 font-bold text-sm px-6 py-3 rounded-full shadow-gold"></div>
 
@@ -471,6 +580,9 @@
 
   var SITE_NAME = "VigilEye";
   document.querySelectorAll('.site-name, #splash-name').forEach(function(el){ el.textContent = SITE_NAME; });
+
+  /* Admin PIN — change this to whatever code you want to gate the admin panel with. */
+  var ADMIN_PIN = "2580";
 
   /* ============ i18n ============ */
   var translations = {
@@ -517,7 +629,37 @@
       "footer.linksTitle": "روابط سريعة", "footer.servicesTitle": "خدماتنا", "footer.followTitle": "تابعنا",
       "footer.privacy": "سياسة الخصوصية", "footer.terms": "الشروط والأحكام",
       "footer.rights": "© 2026 VigilEye — جميع الحقوق محفوظة",
-      "modal.close": "إغلاق"
+      "modal.close": "إغلاق",
+      "admin.pinPrompt": "أدخل رمز الدخول للوحة التحكم",
+      "admin.wrongPin": "رمز غير صحيح",
+      "admin.active": "وضع الإدارة مفعل — يمكنك الإضافة والتعديل والحذف",
+      "admin.exit": "خروج",
+      "admin.addProduct": "إضافة منتج",
+      "admin.reset": "استعادة الافتراضي",
+      "admin.edit": "تعديل",
+      "admin.delete": "حذف",
+      "admin.confirmDelete": "هل تريد حذف هذا المنتج نهائياً؟",
+      "admin.confirmReset": "استعادة قائمة المنتجات الافتراضية؟ سيتم فقدان كل تعديلاتك.",
+      "admin.editTitle": "تعديل المنتج",
+      "admin.addTitle": "إضافة منتج جديد",
+      "admin.save": "حفظ",
+      "admin.cancel": "إلغاء",
+      "admin.saved": "تم الحفظ بنجاح",
+      "admin.deleted": "تم حذف المنتج",
+      "admin.resetDone": "تمت استعادة القائمة الافتراضية",
+      "admin.field.nameAr": "الاسم (عربي)",
+      "admin.field.nameEn": "الاسم (إنجليزي)",
+      "admin.field.descAr": "الوصف (عربي)",
+      "admin.field.descEn": "الوصف (إنجليزي)",
+      "admin.field.price": "السعر (ر.س)",
+      "admin.field.camType": "شكل الكاميرا",
+      "admin.field.resolution": "الدقة",
+      "admin.field.badgeAr": "شارة (عربي) — اختياري",
+      "admin.field.badgeEn": "شارة (إنجليزي) — اختياري",
+      "admin.field.nightAr": "الرؤية الليلية (عربي)",
+      "admin.field.nightEn": "الرؤية الليلية (إنجليزي)",
+      "admin.field.connect": "الاتصال",
+      "admin.field.protection": "درجة الحماية"
     },
     en: {
       "splash.tagline": "Excellence in Security & Surveillance",
@@ -562,7 +704,37 @@
       "footer.linksTitle": "Quick Links", "footer.servicesTitle": "Services", "footer.followTitle": "Follow Us",
       "footer.privacy": "Privacy Policy", "footer.terms": "Terms & Conditions",
       "footer.rights": "© 2026 VigilEye — All Rights Reserved.",
-      "modal.close": "Close"
+      "modal.close": "Close",
+      "admin.pinPrompt": "Enter the admin PIN",
+      "admin.wrongPin": "Incorrect PIN",
+      "admin.active": "Admin mode active — you can add, edit, and delete",
+      "admin.exit": "Exit",
+      "admin.addProduct": "Add Product",
+      "admin.reset": "Reset to Default",
+      "admin.edit": "Edit",
+      "admin.delete": "Delete",
+      "admin.confirmDelete": "Permanently delete this product?",
+      "admin.confirmReset": "Reset to the default product list? All your edits will be lost.",
+      "admin.editTitle": "Edit Product",
+      "admin.addTitle": "Add New Product",
+      "admin.save": "Save",
+      "admin.cancel": "Cancel",
+      "admin.saved": "Saved successfully",
+      "admin.deleted": "Product deleted",
+      "admin.resetDone": "Default list restored",
+      "admin.field.nameAr": "Name (Arabic)",
+      "admin.field.nameEn": "Name (English)",
+      "admin.field.descAr": "Description (Arabic)",
+      "admin.field.descEn": "Description (English)",
+      "admin.field.price": "Price (SAR)",
+      "admin.field.camType": "Camera Shape",
+      "admin.field.resolution": "Resolution",
+      "admin.field.badgeAr": "Badge (Arabic) — optional",
+      "admin.field.badgeEn": "Badge (English) — optional",
+      "admin.field.nightAr": "Night Vision (Arabic)",
+      "admin.field.nightEn": "Night Vision (English)",
+      "admin.field.connect": "Connectivity",
+      "admin.field.protection": "Protection Rating"
     }
   };
 
@@ -707,41 +879,57 @@
   }
 
   /* ============ Product data ============ */
-  var camTypes = ['dome', 'bullet', 'ptz', 'mini', 'bullet', 'dome', 'mini', 'ptz'];
-  var products = [
-    { id: 1, price: 349, badge: { ar: 'الأكثر مبيعاً', en: 'Best Seller' },
+  var defaultProducts = [
+    { id: 1, price: 349, camType: 'dome', badge: { ar: 'الأكثر مبيعاً', en: 'Best Seller' },
       name: { ar: 'VE-Dome 200', en: 'VE-Dome 200' },
       desc: { ar: 'كاميرا قبة داخلية أنيقة بدقة فائقة، مثالية للمنازل والمكاتب.', en: 'An elegant indoor dome camera with ultra-fine detail, perfect for homes and offices.' },
       specs: { resolution: '4MP', night: { ar: '15 متر', en: '15 m' }, connect: 'Wi-Fi / PoE', protection: 'IP20' } },
-    { id: 2, price: 459, badge: null,
+    { id: 2, price: 459, camType: 'bullet', badge: null,
       name: { ar: 'VE-Bullet X7', en: 'VE-Bullet X7' },
       desc: { ar: 'كاميرا خارجية مقاومة للماء والغبار، مصممة لتحمل كل الظروف الجوية.', en: 'A weatherproof outdoor bullet camera engineered to withstand every condition.' },
       specs: { resolution: '5MP', night: { ar: '30 متر', en: '30 m' }, connect: 'PoE', protection: 'IP66' } },
-    { id: 3, price: 1299, badge: { ar: 'احترافي', en: 'Pro' },
+    { id: 3, price: 1299, camType: 'ptz', badge: { ar: 'احترافي', en: 'Pro' },
       name: { ar: 'VE-PTZ Pro', en: 'VE-PTZ Pro' },
       desc: { ar: 'كاميرا متحركة بزاوية تغطية 360° وتتبع تلقائي للحركة.', en: 'A pan-tilt-zoom camera with full 360° coverage and automatic motion tracking.' },
       specs: { resolution: '8MP', night: { ar: '50 متر', en: '50 m' }, connect: 'Wi-Fi / 4G', protection: 'IP67' } },
-    { id: 4, price: 259, badge: null,
+    { id: 4, price: 259, camType: 'mini', badge: null,
       name: { ar: 'VE-Mini Cube', en: 'VE-Mini Cube' },
       desc: { ar: 'كاميرا صغيرة الحجم للمنزل الذكي، سهلة التركيب والتشغيل.', en: 'A compact smart-home camera, easy to install and set up in minutes.' },
       specs: { resolution: '2MP', night: { ar: '10 متر', en: '10 m' }, connect: 'Wi-Fi', protection: 'IP20' } },
-    { id: 5, price: 599, badge: { ar: 'جديد', en: 'New' },
+    { id: 5, price: 599, camType: 'bullet', badge: { ar: 'جديد', en: 'New' },
       name: { ar: 'VE-NightVision Ultra', en: 'VE-NightVision Ultra' },
       desc: { ar: 'رؤية ليلية فائقة الوضوح حتى في الظلام الدامس.', en: 'Ultra-clear night vision performance even in complete darkness.' },
       specs: { resolution: '5MP', night: { ar: '40 متر', en: '40 m' }, connect: 'PoE', protection: 'IP66' } },
-    { id: 6, price: 749, badge: null,
+    { id: 6, price: 749, camType: 'dome', badge: null,
       name: { ar: 'VE-Solar Guard', en: 'VE-Solar Guard' },
       desc: { ar: 'تعمل بالطاقة الشمسية بالكامل، مثالية للمواقع البعيدة عن الكهرباء.', en: 'Fully solar-powered, ideal for remote sites without power access.' },
       specs: { resolution: '4MP', night: { ar: '20 متر', en: '20 m' }, connect: '4G / Wi-Fi', protection: 'IP66' } },
-    { id: 7, price: 399, badge: null,
+    { id: 7, price: 399, camType: 'mini', badge: null,
       name: { ar: 'VE-Doorbell Cam', en: 'VE-Doorbell Cam' },
       desc: { ar: 'جرس باب ذكي بكاميرا مدمجة واتصال ثنائي الاتجاه.', en: 'A smart video doorbell with built-in camera and two-way audio.' },
       specs: { resolution: '3MP', night: { ar: '8 أمتار', en: '8 m' }, connect: 'Wi-Fi', protection: 'IP65' } },
-    { id: 8, price: 1599, badge: { ar: 'موصى به', en: 'Recommended' },
+    { id: 8, price: 1599, camType: 'ptz', badge: { ar: 'موصى به', en: 'Recommended' },
       name: { ar: 'VE-4K Enterprise', en: 'VE-4K Enterprise' },
       desc: { ar: 'كاميرا احترافية بدقة 4K للمنشآت والمشاريع الكبرى.', en: 'A professional-grade 4K camera built for enterprises and large-scale sites.' },
       specs: { resolution: '4K / 8MP', night: { ar: '60 متر', en: '60 m' }, connect: 'PoE / Fiber', protection: 'IP67' } }
   ];
+
+  var PRODUCTS_STORAGE_KEY = 've_products_data';
+  function cloneProducts(arr){ return JSON.parse(JSON.stringify(arr)); }
+  function loadProducts(){
+    try {
+      var raw = localStorage.getItem(PRODUCTS_STORAGE_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length) return parsed;
+      }
+    } catch (e) {}
+    return cloneProducts(defaultProducts);
+  }
+  function saveProducts(){
+    try { localStorage.setItem(PRODUCTS_STORAGE_KEY, JSON.stringify(products)); } catch (e) {}
+  }
+  var products = loadProducts();
 
   function priceLabel(price){
     return currentLang === 'ar' ? price.toLocaleString('ar') + ' ر.س' : 'SAR ' + price.toLocaleString('en');
@@ -750,13 +938,18 @@
   function renderProducts(){
     var grid = document.getElementById('products-grid');
     grid.innerHTML = '';
-    products.forEach(function(p, i){
+    products.forEach(function(p){
       var card = document.createElement('div');
       card.className = 'product-card reveal in-view rounded-2xl p-5 flex flex-col transition-colors duration-300';
       var badgeHtml = p.badge ? '<span class="absolute top-4 start-4 text-[10px] font-bold tracking-wide bg-gold-500 text-ink-900 rounded-full px-2.5 py-1">' + p.badge[currentLang] + '</span>' : '';
+      var adminControlsHtml = isAdmin ?
+        '<div class="absolute top-4 end-4 flex gap-1.5 z-10">' +
+          '<button type="button" data-admin-action="edit" data-id="' + p.id + '" class="admin-ctrl-btn w-7 h-7 rounded-full bg-ink-900/90 border border-white/20 flex items-center justify-center text-xs hover:border-gold-500 hover:text-gold-500 transition-colors" title="' + t('admin.edit') + '">✎</button>' +
+          '<button type="button" data-admin-action="delete" data-id="' + p.id + '" class="admin-ctrl-btn w-7 h-7 rounded-full bg-ink-900/90 border border-white/20 flex items-center justify-center text-xs hover:border-red-400 hover:text-red-400 transition-colors" title="' + t('admin.delete') + '">🗑</button>' +
+        '</div>' : '';
       card.innerHTML =
-        '<div class="relative">' + badgeHtml +
-          '<div class="viewer-360 relative w-full h-40 mb-2" data-cam-type="' + camTypes[i] + '" data-cam-idx="p' + p.id + '">' +
+        '<div class="relative">' + badgeHtml + adminControlsHtml +
+          '<div class="viewer-360 relative w-full h-40 mb-2" data-cam-type="' + p.camType + '" data-cam-idx="p' + p.id + '">' +
             '<div class="viewer-stage w-full h-full flex items-center justify-center"><div class="viewer-object w-32 h-32"></div></div>' +
             '<div class="viewer-shadow absolute bottom-1 start-1/2 -translate-x-1/2 w-20 h-4 bg-black/50 rounded-full blur-md"></div>' +
           '</div>' +
@@ -773,11 +966,26 @@
       initViewer(card.querySelector('.viewer-360'));
     });
 
+    if (isAdmin) {
+      var addCard = document.createElement('button');
+      addCard.type = 'button';
+      addCard.className = 'border-2 border-dashed border-white/15 hover:border-gold-500/50 rounded-2xl flex flex-col items-center justify-center gap-2 text-white/40 hover:text-gold-500 transition-colors min-h-[280px]';
+      addCard.innerHTML = '<span class="text-3xl leading-none">+</span><span class="text-xs font-semibold">' + t('admin.addProduct') + '</span>';
+      addCard.addEventListener('click', function(){ openAdminEditor(null); });
+      grid.appendChild(addCard);
+    }
+
     grid.querySelectorAll('[data-action="details"]').forEach(function(btn){
       btn.addEventListener('click', function(){ openModal(parseInt(btn.getAttribute('data-id'), 10)); });
     });
     grid.querySelectorAll('[data-action="order"]').forEach(function(btn){
       btn.addEventListener('click', function(){ selectProductForOrder(parseInt(btn.getAttribute('data-id'), 10)); });
+    });
+    grid.querySelectorAll('[data-admin-action="edit"]').forEach(function(btn){
+      btn.addEventListener('click', function(e){ e.stopPropagation(); openAdminEditor(parseInt(btn.getAttribute('data-id'), 10)); });
+    });
+    grid.querySelectorAll('[data-admin-action="delete"]').forEach(function(btn){
+      btn.addEventListener('click', function(e){ e.stopPropagation(); deleteAdminProduct(parseInt(btn.getAttribute('data-id'), 10)); });
     });
   }
 
@@ -864,8 +1072,7 @@
       specsList.appendChild(li);
     });
 
-    var idx = products.findIndex(function(x){ return x.id === id; });
-    modalViewer.setAttribute('data-cam-type', camTypes[idx]);
+    modalViewer.setAttribute('data-cam-type', p.camType);
     modalViewer.setAttribute('data-cam-idx', 'm' + id);
     modalViewer._veBound = false;
     if (modalViewer._veRaf) cancelAnimationFrame(modalViewer._veRaf);
@@ -941,6 +1148,139 @@
   }, { threshold: 0.15 });
   document.querySelectorAll('.reveal').forEach(function(el){ revealObserver.observe(el); });
 
+  /* ============ Admin mode ============ */
+  var isAdmin = false;
+  try { isAdmin = sessionStorage.getItem('ve_admin') === '1'; } catch (e) {}
+
+  var adminBanner = document.getElementById('admin-banner');
+  var adminFab = document.getElementById('admin-fab');
+  var adminModal = document.getElementById('admin-modal');
+  var editingProductId = null;
+
+  function positionAdminBanner(){
+    adminBanner.style.top = document.getElementById('site-header').offsetHeight + 'px';
+  }
+
+  function updateAdminChrome(){
+    var hero = document.getElementById('home');
+    if (isAdmin) {
+      adminBanner.classList.remove('hidden');
+      positionAdminBanner();
+      hero.style.paddingTop = 'calc(7rem + ' + adminBanner.offsetHeight + 'px)';
+      adminFab.classList.add('text-gold-500', 'border-gold-500/60');
+    } else {
+      adminBanner.classList.add('hidden');
+      hero.style.paddingTop = '';
+      adminFab.classList.remove('text-gold-500', 'border-gold-500/60');
+    }
+  }
+  window.addEventListener('resize', function(){ if (isAdmin) positionAdminBanner(); });
+
+  function enterAdmin(){
+    var pin = prompt(t('admin.pinPrompt'));
+    if (pin === null) return;
+    if (pin === ADMIN_PIN) {
+      isAdmin = true;
+      try { sessionStorage.setItem('ve_admin', '1'); } catch (e) {}
+      updateAdminChrome();
+      renderProducts();
+      showToast(t('admin.active'));
+    } else {
+      showToast(t('admin.wrongPin'));
+    }
+  }
+  function exitAdmin(){
+    isAdmin = false;
+    try { sessionStorage.removeItem('ve_admin'); } catch (e) {}
+    updateAdminChrome();
+    renderProducts();
+  }
+  adminFab.addEventListener('click', function(){ isAdmin ? exitAdmin() : enterAdmin(); });
+  document.getElementById('admin-exit-btn').addEventListener('click', exitAdmin);
+  document.getElementById('admin-add-btn').addEventListener('click', function(){ openAdminEditor(null); });
+  document.getElementById('admin-reset-btn').addEventListener('click', function(){
+    if (!confirm(t('admin.confirmReset'))) return;
+    products = cloneProducts(defaultProducts);
+    saveProducts();
+    renderProducts();
+    showToast(t('admin.resetDone'));
+  });
+
+  function openAdminEditor(id){
+    editingProductId = id;
+    var form = document.getElementById('admin-product-form');
+    form.reset();
+    document.getElementById('admin-modal-title').textContent = id === null ? t('admin.addTitle') : t('admin.editTitle');
+    document.getElementById('af-cam-type').value = 'dome';
+    if (id !== null) {
+      var p = products.find(function(x){ return x.id === id; });
+      if (!p) return;
+      document.getElementById('af-name-ar').value = p.name.ar;
+      document.getElementById('af-name-en').value = p.name.en;
+      document.getElementById('af-desc-ar').value = p.desc.ar;
+      document.getElementById('af-desc-en').value = p.desc.en;
+      document.getElementById('af-price').value = p.price;
+      document.getElementById('af-cam-type').value = p.camType;
+      document.getElementById('af-badge-ar').value = p.badge ? p.badge.ar : '';
+      document.getElementById('af-badge-en').value = p.badge ? p.badge.en : '';
+      document.getElementById('af-resolution').value = p.specs.resolution;
+      document.getElementById('af-night-ar').value = p.specs.night.ar;
+      document.getElementById('af-night-en').value = p.specs.night.en;
+      document.getElementById('af-connect').value = p.specs.connect;
+      document.getElementById('af-protection').value = p.specs.protection;
+    }
+    adminModal.classList.remove('modal-hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAdminModal(){
+    adminModal.classList.add('modal-hidden');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('admin-modal-close').addEventListener('click', closeAdminModal);
+  document.getElementById('admin-modal-backdrop').addEventListener('click', closeAdminModal);
+  document.getElementById('admin-modal-cancel').addEventListener('click', closeAdminModal);
+
+  document.getElementById('admin-product-form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var form = e.currentTarget;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    var badgeAr = document.getElementById('af-badge-ar').value.trim();
+    var badgeEn = document.getElementById('af-badge-en').value.trim();
+    var data = {
+      name: { ar: document.getElementById('af-name-ar').value.trim(), en: document.getElementById('af-name-en').value.trim() },
+      desc: { ar: document.getElementById('af-desc-ar').value.trim(), en: document.getElementById('af-desc-en').value.trim() },
+      price: Math.max(0, parseInt(document.getElementById('af-price').value, 10) || 0),
+      camType: document.getElementById('af-cam-type').value,
+      badge: (badgeAr || badgeEn) ? { ar: badgeAr || badgeEn, en: badgeEn || badgeAr } : null,
+      specs: {
+        resolution: document.getElementById('af-resolution').value.trim(),
+        night: { ar: document.getElementById('af-night-ar').value.trim(), en: document.getElementById('af-night-en').value.trim() },
+        connect: document.getElementById('af-connect').value.trim(),
+        protection: document.getElementById('af-protection').value.trim()
+      }
+    };
+    if (editingProductId === null) {
+      var nextId = products.reduce(function(max, p){ return Math.max(max, p.id); }, 0) + 1;
+      data.id = nextId;
+      products.push(data);
+    } else {
+      var idx = products.findIndex(function(x){ return x.id === editingProductId; });
+      if (idx !== -1) products[idx] = Object.assign({ id: editingProductId }, data);
+    }
+    saveProducts();
+    renderProducts();
+    closeAdminModal();
+    showToast(t('admin.saved'));
+  });
+
+  function deleteAdminProduct(id){
+    if (!confirm(t('admin.confirmDelete'))) return;
+    products = products.filter(function(x){ return x.id !== id; });
+    saveProducts();
+    renderProducts();
+    showToast(t('admin.deleted'));
+  }
+
   /* ============ Splash ============ */
   window.addEventListener('load', function(){
     var splash = document.getElementById('splash');
@@ -956,6 +1296,7 @@
 
   /* ============ Init hero viewer + first render ============ */
   initViewer(document.querySelector('#home .viewer-360'));
+  updateAdminChrome();
   applyLang(currentLang);
 })();
 </script>
