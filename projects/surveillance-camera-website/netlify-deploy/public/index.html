@@ -802,62 +802,75 @@
 
     var body = '';
     if (type === 'dome') {
+      /* Ceiling dome: flat mounting collar at top, a real rounded dome bulb
+         below it, lens set into the underside — not a bare circle. */
       body =
-        '<ellipse cx="100" cy="150" rx="55" ry="10" fill="#000" opacity="0.35"/>' +
-        '<rect x="70" y="140" width="60" height="12" rx="4" fill="url(#' + gBody + ')"/>' +
-        '<path d="M60 140 A40 46 0 0 1 140 140 Z" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
-        '<path d="M64 138 A36 42 0 0 1 106 99" fill="none" stroke="url(#' + gRim + ')" stroke-width="4" stroke-linecap="round"/>' +
-        ledRing(100, 118, 32, 8, 3) +
-        '<circle cx="100" cy="118" r="27" fill="url(#' + gGold + ')"/>' +
-        '<circle cx="100" cy="118" r="19.5" fill="#050505"/>' +
-        '<circle cx="100" cy="118" r="18" fill="url(#' + gLens + ')"/>' +
-        '<ellipse cx="93" cy="110" rx="7" ry="5" fill="#fff" opacity="0.4"/>' +
-        '<circle cx="90" cy="107" r="2" fill="#fff" opacity="0.85"/>';
+        '<rect x="72" y="38" width="56" height="14" rx="5" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
+        '<ellipse cx="100" cy="92" rx="46" ry="44" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
+        '<path d="M64 76 Q100 56 136 76" fill="none" stroke="url(#' + gRim + ')" stroke-width="3" stroke-linecap="round"/>' +
+        ledRing(100, 120, 26, 8, 2.6) +
+        '<circle cx="100" cy="120" r="19" fill="url(#' + gGold + ')"/>' +
+        '<circle cx="100" cy="120" r="13.5" fill="#050505"/>' +
+        '<circle cx="100" cy="120" r="12" fill="url(#' + gLens + ')"/>' +
+        '<ellipse cx="94" cy="114" rx="5" ry="3.6" fill="#fff" opacity="0.4"/>' +
+        '<circle cx="91" cy="111" r="1.5" fill="#fff" opacity="0.9"/>';
     } else if (type === 'bullet') {
+      /* Classic bullet camera: a clearly elongated body, wall bracket at the
+         back, lens housing protruding at the front — the lens is a detail
+         on the camera, not the whole camera. */
       body =
-        '<ellipse cx="100" cy="155" rx="48" ry="8" fill="#000" opacity="0.3"/>' +
-        '<rect x="55" y="60" width="18" height="34" rx="4" fill="url(#' + gBody + ')"/>' +
-        '<circle cx="60" cy="66" r="1.8" fill="#000" opacity="0.45"/>' +
-        '<circle cx="68" cy="88" r="1.8" fill="#000" opacity="0.45"/>' +
-        '<rect x="60" y="70" width="80" height="46" rx="20" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
-        '<path d="M65 74 Q100 60 135 74" fill="none" stroke="url(#' + gRim + ')" stroke-width="3" stroke-linecap="round"/>' +
-        '<path d="M60 66 Q100 48 140 66" fill="none" stroke="url(#' + gGold + ')" stroke-width="5" stroke-linecap="round"/>' +
-        ledRing(132, 93, 27, 8, 2.6) +
-        '<circle cx="132" cy="93" r="21" fill="url(#' + gGold + ')"/>' +
-        '<circle cx="132" cy="93" r="15" fill="#050505"/>' +
-        '<circle cx="132" cy="93" r="13.5" fill="url(#' + gLens + ')"/>' +
-        '<ellipse cx="126" cy="86" rx="5.5" ry="4" fill="#fff" opacity="0.4"/>' +
-        '<circle cx="123" cy="83" r="1.6" fill="#fff" opacity="0.9"/>';
+        '<ellipse cx="100" cy="164" rx="50" ry="7" fill="#000" opacity="0.3"/>' +
+        '<rect x="26" y="90" width="16" height="24" rx="4" fill="url(#' + gBody + ')"/>' +
+        '<path d="M42 96 L55 87 L55 118 L42 108 Z" fill="url(#' + gBody + ')"/>' +
+        '<rect x="53" y="78" width="96" height="46" rx="15" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
+        '<path d="M60 80 Q100 68 140 80" fill="none" stroke="url(#' + gRim + ')" stroke-width="3" stroke-linecap="round"/>' +
+        '<circle cx="63" cy="116" r="1.6" fill="#000" opacity="0.45"/>' +
+        '<circle cx="78" cy="118" r="1.6" fill="#000" opacity="0.45"/>' +
+        '<circle cx="138" cy="101" r="27" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
+        ledRing(138, 101, 22, 8, 2.3) +
+        '<circle cx="138" cy="101" r="16" fill="url(#' + gGold + ')"/>' +
+        '<circle cx="138" cy="101" r="11.3" fill="#050505"/>' +
+        '<circle cx="138" cy="101" r="10" fill="url(#' + gLens + ')"/>' +
+        '<ellipse cx="133" cy="96" rx="4.2" ry="3" fill="#fff" opacity="0.4"/>' +
+        '<circle cx="130" cy="93" r="1.3" fill="#fff" opacity="0.9"/>';
     } else if (type === 'ptz') {
+      /* Smart PTZ dome: metallic upper cap + tinted lower glass bowl (the
+         lens hides behind it, like the real thing) on a pole mount. */
       body =
-        '<ellipse cx="100" cy="158" rx="42" ry="8" fill="#000" opacity="0.3"/>' +
-        '<rect x="92" y="120" width="16" height="34" rx="3" fill="url(#' + gBody + ')"/>' +
-        '<circle cx="100" cy="98" r="46" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
-        '<path d="M66 76 A46 46 0 0 1 130 65" fill="none" stroke="url(#' + gRim + ')" stroke-width="4" stroke-linecap="round"/>' +
-        '<circle cx="100" cy="98" r="46" fill="none" stroke="url(#' + gGold + ')" stroke-width="2.5" opacity="0.7"/>' +
-        ledRing(100, 98, 32, 10, 2.6) +
-        '<circle cx="100" cy="98" r="28" fill="url(#' + gGold + ')"/>' +
-        '<circle cx="100" cy="98" r="20" fill="#050505"/>' +
-        '<circle cx="100" cy="98" r="18.5" fill="url(#' + gLens + ')"/>' +
-        '<ellipse cx="92" cy="89" rx="7" ry="5" fill="#fff" opacity="0.4"/>' +
-        '<circle cx="88" cy="85" r="2" fill="#fff" opacity="0.9"/>' +
-        '<circle cx="132" cy="70" r="2.4" fill="#F5C518"/>';
+        '<ellipse cx="100" cy="170" rx="26" ry="6" fill="#000" opacity="0.3"/>' +
+        '<rect x="92" y="138" width="16" height="26" rx="4" fill="url(#' + gBody + ')"/>' +
+        '<ellipse cx="100" cy="163" rx="20" ry="5.5" fill="url(#' + gBody + ')"/>' +
+        '<circle cx="100" cy="92" r="44" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
+        '<path d="M60 72 A44 44 0 0 1 140 72" fill="none" stroke="url(#' + gRim + ')" stroke-width="3.5" stroke-linecap="round"/>' +
+        '<ellipse cx="100" cy="98" rx="44" ry="4" fill="url(#' + gGold + ')" opacity="0.85"/>' +
+        '<ellipse cx="100" cy="114" rx="41" ry="27" fill="#07090c" opacity="0.9"/>' +
+        '<circle cx="100" cy="114" r="15" fill="url(#' + gGold + ')" opacity="0.9"/>' +
+        '<circle cx="100" cy="114" r="10.4" fill="#050505"/>' +
+        '<circle cx="100" cy="114" r="9.2" fill="url(#' + gLens + ')"/>' +
+        '<ellipse cx="95.5" cy="109.5" rx="3.8" ry="2.6" fill="#fff" opacity="0.35"/>' +
+        '<circle cx="93.5" cy="107.5" r="1.1" fill="#fff" opacity="0.85"/>' +
+        '<circle cx="130" cy="66" r="2.2" fill="url(#' + gGold + ')"/>';
     } else {
+      /* Compact smart-home cube: visible box body, off-center-ish lens,
+         speaker-grille slits and a status LED so it reads as a device. */
       body =
-        '<ellipse cx="100" cy="150" rx="40" ry="8" fill="#000" opacity="0.3"/>' +
-        '<rect x="64" y="66" width="72" height="72" rx="18" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
-        '<path d="M68 70 Q100 60 132 70" fill="none" stroke="url(#' + gRim + ')" stroke-width="3" stroke-linecap="round"/>' +
-        ledRing(100, 102, 26, 6, 2.4) +
-        '<circle cx="100" cy="102" r="25" fill="url(#' + gGold + ')"/>' +
-        '<circle cx="100" cy="102" r="18" fill="#050505"/>' +
-        '<circle cx="100" cy="102" r="16.5" fill="url(#' + gLens + ')"/>' +
-        '<ellipse cx="93" cy="95" rx="6" ry="4.3" fill="#fff" opacity="0.4"/>' +
-        '<circle cx="90" cy="92" r="1.8" fill="#fff" opacity="0.9"/>' +
-        '<circle cx="120" cy="80" r="3" fill="url(#' + gGold + ')"/>';
+        '<ellipse cx="100" cy="152" rx="38" ry="7" fill="#000" opacity="0.28"/>' +
+        '<rect x="62" y="62" width="76" height="76" rx="20" fill="url(#' + gBody + ')" stroke="#000" stroke-width="1"/>' +
+        '<path d="M68 66 Q100 54 132 66" fill="none" stroke="url(#' + gRim + ')" stroke-width="3" stroke-linecap="round"/>' +
+        ledRing(100, 98, 24, 6, 2.3) +
+        '<circle cx="100" cy="98" r="18" fill="url(#' + gGold + ')"/>' +
+        '<circle cx="100" cy="98" r="13" fill="#050505"/>' +
+        '<circle cx="100" cy="98" r="11.5" fill="url(#' + gLens + ')"/>' +
+        '<ellipse cx="94.5" cy="92.5" rx="4.6" ry="3.3" fill="#fff" opacity="0.4"/>' +
+        '<circle cx="92" cy="90" r="1.4" fill="#fff" opacity="0.9"/>' +
+        '<rect x="88" y="122" width="4" height="6" rx="1" fill="#000" opacity="0.4"/>' +
+        '<rect x="96" y="122" width="4" height="6" rx="1" fill="#000" opacity="0.4"/>' +
+        '<rect x="104" y="122" width="4" height="6" rx="1" fill="#000" opacity="0.4"/>' +
+        '<rect x="112" y="122" width="4" height="6" rx="1" fill="#000" opacity="0.4"/>' +
+        '<circle cx="122" cy="72" r="2.6" fill="url(#' + gGold + ')"/>';
     }
     return '<svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-[0_10px_18px_rgba(0,0,0,0.6)]">' + defs + body + '</svg>';
   }
-
 
   /* ============ 360 viewer interaction ============ */
   function initViewer(el){
