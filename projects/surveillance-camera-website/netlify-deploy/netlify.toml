@@ -1,0 +1,18 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/products/:id"
+  to = "/.netlify/functions/products?id=:id"
+  status = 200
+
+[[redirects]]
+  from = "/api/products"
+  to = "/.netlify/functions/products"
+  status = 200
+
+[[redirects]]
+  from = "/api/admin/:action"
+  to = "/.netlify/functions/admin?action=:action"
+  status = 200

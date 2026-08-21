@@ -1,0 +1,9 @@
+{
+  "name": "vigileye-netlify",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VigilEye surveillance-camera site, deployable to Netlify with a real shared product catalog (Netlify Blobs) behind an admin panel (Netlify Functions).",
+  "dependencies": {
+    "@netlify/blobs": "^11.0.1"
+  }
+}

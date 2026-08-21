@@ -57,3 +57,6 @@ ui-ux-pro-max-website/*
 
 cli/playwright-report/
 cli/test-results/
+
+# Local Netlify folder
+.netlify
