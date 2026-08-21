@@ -2,7 +2,7 @@
 'use strict';
 
 /*
- * VigilEye demo server — zero npm dependencies, only Node's built-in modules.
+ * HASNET demo server — zero npm dependencies, only Node's built-in modules.
  *
  * Serves the static site from public/ and a small REST API for the product
  * catalog, backed by a JSON file (data/products.json). This is what makes
@@ -303,6 +303,6 @@ const server = http.createServer(function (req, res) {
 
 ensureDataFile();
 server.listen(PORT, function () {
-  console.log('VigilEye server running at http://localhost:' + PORT);
+  console.log('HASNET server running at http://localhost:' + PORT);
   console.log('Admin PIN: ' + ADMIN_PIN + ' (override with the ADMIN_PIN env var)');
 });

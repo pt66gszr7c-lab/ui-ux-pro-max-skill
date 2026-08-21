@@ -1,7 +1,7 @@
 'use strict';
 
 /*
- * Shared helpers for the VigilEye Netlify Functions.
+ * Shared helpers for the HASNET Netlify Functions.
  *
  * Storage: Netlify Blobs (@netlify/blobs) — a small managed key/value store
  * that Netlify provisions automatically for a deployed site, so the product
