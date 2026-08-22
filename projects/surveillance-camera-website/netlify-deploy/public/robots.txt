@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://hasnet-cctv.netlify.app/sitemap.xml

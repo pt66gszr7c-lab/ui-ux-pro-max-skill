@@ -1,0 +1,13 @@
+{
+  "name": "vigileye-surveillance-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "VigilEye bilingual surveillance-camera demo site with a small Node backend for the admin panel.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}
