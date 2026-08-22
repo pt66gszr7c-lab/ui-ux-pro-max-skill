@@ -65,6 +65,17 @@ const DEFAULT_PRODUCTS = [
 ];
 
 function productsStore() {
+  // getStore(name) alone relies on Netlify auto-injecting site credentials
+  // into the function's environment, which some deploy configurations
+  // (e.g. a manually-configured base directory, as this site uses) don't
+  // do. Fall back to explicit credentials when they're provided.
+  if (process.env.BLOBS_SITE_ID && process.env.BLOBS_TOKEN) {
+    return getStore({
+      name: STORE_NAME,
+      siteID: process.env.BLOBS_SITE_ID,
+      token: process.env.BLOBS_TOKEN
+    });
+  }
   return getStore(STORE_NAME);
 }
 
