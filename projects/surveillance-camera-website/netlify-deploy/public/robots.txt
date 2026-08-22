@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hanset-cctv.netlify.app/sitemap.xml
+Sitemap: https://hasnet-cctv.netlify.app/sitemap.xml
