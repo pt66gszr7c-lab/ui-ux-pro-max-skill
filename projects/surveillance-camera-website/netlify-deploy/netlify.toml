@@ -3,8 +3,8 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "/api/products/:id"
-  to = "/.netlify/functions/products?id=:id"
+  from = "/api/products/*"
+  to = "/.netlify/functions/products/:splat"
   status = 200
 
 [[redirects]]
@@ -13,6 +13,6 @@
   status = 200
 
 [[redirects]]
-  from = "/api/admin/:action"
-  to = "/.netlify/functions/admin?action=:action"
+  from = "/api/admin/*"
+  to = "/.netlify/functions/admin/:splat"
   status = 200

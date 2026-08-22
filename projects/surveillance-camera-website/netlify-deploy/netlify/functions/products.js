@@ -11,9 +11,13 @@ const {
 } = require('./shared');
 
 /*
- * Routed by netlify.toml:
- *   /api/products         -> here, no ?id
- *   /api/products/:id     -> here, ?id=:id  (also handles the special id "reset")
+ * Routed by netlify.toml via a splat (not a named placeholder, which isn't
+ * reliably substituted into the query string on every Netlify plan):
+ *   /api/products/*  -> /.netlify/functions/products/:splat
+ *   /api/products    -> /.netlify/functions/products
+ *
+ * So the id (or "reset") is read straight from event.path instead of a
+ * query parameter.
  *
  * GET    /api/products          list (public)
  * POST   /api/products          create (admin)
@@ -23,7 +27,8 @@ const {
  */
 exports.handler = async function (event) {
   const method = event.httpMethod;
-  const idParam = event.queryStringParameters && event.queryStringParameters.id;
+  const pathMatch = (event.path || '').match(/\/products\/?([^/]*)$/);
+  const idParam = pathMatch && pathMatch[1] ? pathMatch[1] : undefined;
 
   if (method === 'GET' && !idParam) {
     return json(200, await readProducts());

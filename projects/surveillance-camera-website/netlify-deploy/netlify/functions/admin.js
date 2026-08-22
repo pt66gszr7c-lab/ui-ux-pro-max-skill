@@ -3,14 +3,18 @@
 const { ADMIN_PIN, makeToken, isAuthed, json, parseJsonBody } = require('./shared');
 
 /*
- * Routed by netlify.toml: /api/admin/:action -> here, ?action=:action
+ * Routed by netlify.toml via a splat (not a named placeholder, which isn't
+ * reliably substituted into the query string on every Netlify plan):
+ *   /api/admin/*  -> /.netlify/functions/admin/:splat
+ * So the action is read straight from event.path instead of a query param.
  *
  * POST /api/admin/login    body {pin} -> sets a signed httpOnly session cookie
  * POST /api/admin/logout   clears the cookie
  * GET  /api/admin/status   {isAdmin: boolean}
  */
 exports.handler = async function (event) {
-  const action = event.queryStringParameters && event.queryStringParameters.action;
+  const pathMatch = (event.path || '').match(/\/admin\/?([^/]*)$/);
+  const action = pathMatch && pathMatch[1] ? pathMatch[1] : undefined;
 
   if (action === 'login' && event.httpMethod === 'POST') {
     const body = parseJsonBody(event);
